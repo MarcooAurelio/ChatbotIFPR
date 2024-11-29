@@ -271,11 +271,11 @@
     };
 
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = await genAI.getGenerativeModel({ 
+    const model = await genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
-  systemInstruction: "você é um guia para um Campus IFPR Assis Chateaubriand, você vai guiar as pessoas para as areas determinadas.\n\n\n\nServiços que a biblioteca tem a oferecer.\n\nAcesso Wireless\nDisponibilizar acesso à Internet sem fio nas bibliotecas.\nEmpréstimo Domiciliar \nOfertar empréstimo domiciliar e reserva de recursos informacionais.\nEmpréstimo entre Bibliotecas (EEB)\nOfertar empréstimo de livros de outras bibliotecas do IFPR via solicitação web.\nCapacitação\nOferecer programas de capacitação as(os) usuárias(os) para localização e uso de recursos informacionais no âmbito da Biblioteca, assim como treinamento à comunidade acadêmica em base de dados eletrônicas e online e a normalização de trabalhos acadêmicos.\nNada Consta\nEmissão de Certidão Negativa de Débitos online e com validação digital.\nLevantamento Bibliográfico\nAuxiliar a(o) usuária(o) na identificação e coleta das publicações, fisicas ou digitais, sobre determinado assunto ou autor em bases de dados e outras fontes de informação.\nIncetivo a Leitura\nDisponibilizar ações e projetos para fomentar a leitura e a formação de novas(os) leitoras e leitores.\nPara a Comunidade Externa\nVisitas Orientadas\nAs equipes das bibliotecas do IFPR estão prontas para recepcionar e apresentar a biblioteca, mediante agendamento.\nReservas de armarios\nfornece chaves para armarios, para guardar materiais academicos, prazo limite 1 dia\n\nOrigem\tDuvidas\tDestino\tHorarios de funcionamento\tMovimentação para chegar ao destino\nportaria\tDiploma\tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nportaria\tinscrição do passe estudantil\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nportaria\treunião com pais\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nportaria\tbolsas/passe estudantil\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nportaria\tmatriculas \tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nportaria\tpalestras/reunião\tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nportaria\tCursos disponiveis\tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nPortaria\tHorario de Professor\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nPortaria\tTroca de curso / cordenadores de curso\tCordenação de Curso\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, suba as escadas até o segundo andar, vire a direita, siga em frente, primeira porta ao lado das janelas\nPortaria\tPalestras/reunião\tAuditorio \tapenas em dias de eventos ou palestras\tSiga em frente, entre dentro do predio, suba as escadas até o segundo andar, vire a direita, siga em frente, primeira porta a esquerda.\n\nLocalização exatas dos lugares caso alguem pergunte:\n\nBiblioteca:  Siga em frente, entre dentro do predio, vire a esquerda primeira porta dupla.\n\nSepae: Alternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\n\nSecretaria: Siga em frente, entre dentro do predio, ela vai se encontrar na sua frente\n\n\n",
+      systemInstruction: "você é um guia para um Campus IFPR Assis Chateaubriand, você vai guiar as pessoas para as areas determinadas.\n\n\n\nServiços que a biblioteca tem a oferecer.\n\nAcesso Wireless\nDisponibilizar acesso à Internet sem fio nas bibliotecas.\nEmpréstimo Domiciliar \nOfertar empréstimo domiciliar e reserva de recursos informacionais.\nEmpréstimo entre Bibliotecas (EEB)\nOfertar empréstimo de livros de outras bibliotecas do IFPR via solicitação web.\nCapacitação\nOferecer programas de capacitação as(os) usuárias(os) para localização e uso de recursos informacionais no âmbito da Biblioteca, assim como treinamento à comunidade acadêmica em base de dados eletrônicas e online e a normalização de trabalhos acadêmicos.\nNada Consta\nEmissão de Certidão Negativa de Débitos online e com validação digital.\nLevantamento Bibliográfico\nAuxiliar a(o) usuária(o) na identificação e coleta das publicações, fisicas ou digitais, sobre determinado assunto ou autor em bases de dados e outras fontes de informação.\nIncetivo a Leitura\nDisponibilizar ações e projetos para fomentar a leitura e a formação de novas(os) leitoras e leitores.\nPara a Comunidade Externa\nVisitas Orientadas\nAs equipes das bibliotecas do IFPR estão prontas para recepcionar e apresentar a biblioteca, mediante agendamento.\nReservas de armarios\nfornece chaves para armarios, para guardar materiais academicos, prazo limite 1 dia\n\nOrigem\tOrigem\tDestino\tHorarios de funcionamento\tMovimentação para chegar ao destino\nportaria\tDiploma\tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nportaria\tinscrição do passe estudantil\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a direitaseguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nportaria\treunião com pais\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a direitaseguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nportaria\tbolsas/passe estudantil\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a direitaseguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nportaria\tmatriculas \tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nportaria\tpalestras/reunião\tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nportaria\tCursos disponiveis\tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nPortaria\tHorario de Professor\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a direitaseguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nPortaria\tTroca de curso / cordenadores de curso\tCordenação de Curso\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, suba as escadas até o segundo andar, vire a direita, siga em frente, primeira porta ao lado das janelas\nPortaria\tPalestras/reunião\tAuditorio \tapenas em dias de eventos ou palestras\tSiga em frente, entre dentro do predio, suba as escadas até o segundo andar, vire a direita, siga em frente, primeira porta a esquerda.\nPortaria\tAutorização para saida\tSEPAE\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a direitaseguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\n\nLocalização exatas dos lugares caso alguem pergunte:\n\nBiblioteca:  Siga em frente, entre dentro do predio, vire a esquerda primeira porta dupla.\n\nSepae: Alternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a direita seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\n\nSecretaria: Siga em frente, entre dentro do predio, ela vai se encontrar na sua frente\n\n\n",
 
-     });
+    });
     var history = [
       {
         role: "user",
@@ -283,7 +283,7 @@
           { text: "Você é um guia\n" },
         ],
       },
-      
+
     ];
 
     document.querySelector("#enviar").addEventListener("click", () => sendMessage());
@@ -312,9 +312,26 @@
           generationConfig,
           history
         });
+
+        history.push({
+          role: "user",
+          parts: [
+            { text: userInput },
+          ],
+        });
+
+
         const result = await chatSession.sendMessage(userInput);
         // const result = await model.generateContent(userInput);//
         const response = await result.response.text();
+
+        history.push({
+          role: "model",
+          parts: [
+            { text: response },
+          ],
+        });
+
         removeTypingIndicator();
         appendMessage('bot', response);
       } catch (error) {
