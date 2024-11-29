@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot IFPR</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js"
+    integrity="sha512-kaDP6dcDG3+X87m9SnhyJzwBMKrYnd2tLJjGdBrZ9yEL8Zcl2iJRsPwylLkbd2g3QC5S8efV3sgwI5r73U0HnA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #87cf87;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      background-color: #FFFFFF;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      color: #333;
+    }
+
+    .chat-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background-color: #388E3C;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 4px solid #81C784;
+    }
+
+    .header .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+    }
+
+    .header nav {
+      display: flex;
+      gap: 15px;
+      position: relative;
+    }
+
+    .header nav a {
+      text-decoration: none;
+      color: #C8E6C9;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .header nav a:hover {
+      color: #FFFFFF;
+    }
+
+    .contact-info {
+      position: absolute;
+      top: 30px;
+      left: 0;
+      display: none;
+      background-color: #FFFFFF;
+      border: 1px solid #388E3C;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 8px;
+      color: #333;
+      font-size: 14px;
+      z-index: 10;
+    }
+
+    .header nav a:hover+.contact-info {
+      display: block;
+    }
+
+    .chat-container {
+      height: 500px;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: #F4F9F4;
+      flex-grow: 1;
+    }
+
+    .chat-footer {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background-color: #E8F5E9;
+      border-top: 2px solid #81C784;
+    }
+
+    .chat-footer input[type="text"] {
+      flex: 1;
+      padding: 12px 15px;
+      border: 1px solid #81C784;
+      border-radius: 25px;
+      margin-right: 10px;
+      font-size: 14px;
+      outline: none;
+      background-color: #C8E6C9;
+      transition: border-color 0.3s;
+    }
+
+    .chat-footer input[type="text"]:focus {
+      border-color: #388E3C;
+    }
+
+    .chat-footer button {
+      padding: 10px 16px;
+      background-color: #388E3C;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .chat-footer button:hover {
+      background-color: #2E7D32;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 12px;
+      word-wrap: break-word;
+      display: flex;
+      align-items: center;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background-color: #81C784;
+      color: white;
+    }
+
+    .bot-message {
+      align-self: flex-start;
+      background-color: #A5D6A7;
+      color: #333;
+    }
+
+    .message img {
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .typing-indicator {
+      font-size: 18px;
+      color: #388E3C;
+      animation: typing 1.5s infinite;
+    }
+
+    @keyframes typing {
+      0% {
+        content: " .";
+      }
+
+      33% {
+        content: " ..";
+      }
+
+      66% {
+        content: " ...";
+      }
+    }
+
+    .info-section {
+      background-color: #F1F8E9;
+      padding: 20px;
+      border-left: 4px solid #388E3C;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .info-section h3 {
+      margin: 0;
+      color: #388E3C;
+    }
+
+    .info-section p {
+      margin: 0;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="chat-wrapper">
+      <div class="header">
+
+        <img src="logo.png" alt="Logo do IFPR"
+          style="border-radius: 50%; width: 60px; height: 60px; margin-right: 15px;">
+        <div class="logo">Chatbot IFPR</div>
+        <nav>
+          <a href="https://forms.gle/PRj5i691RxvzsLYR7" target="_blank">Suporte</a>
+          <a href="#">Contatos</a>
+          <div class="contact-info">
+            <p>Email: assis.secretaria@ifpr.edu.br</p>
+            <p>Telefone: (44) 3528-6885</p>
+          </div>
+          <a href="sobre.html">Sobre Nós</a>
+        </nav>
+      </div>
+      <div class="chat-container" id="chat-container"></div>
+      <div class="chat-footer">
+        <input type="text" id="user-input" placeholder="Digite sua mensagem...">
+        <button id="enviar">Enviar</button>
+      </div>
+    </div>
+    <div class="info-section">
+      <h3>Como o Chatbot Funciona</h3>
+      <p>Este chatbot utiliza inteligência artificial para responder às suas perguntas. Ele é integrado ao banco de
+        dados do campus e fornece informações rápidas e úteis.</p>
+      <p>O objetivo do chatbot é facilitar o acesso a informações e orientações dentro do IFPR.</p>
+      <p><strong>Dicas:</strong></p>
+      <ul>
+        <li>Seja claro e objetivo em suas perguntas.</li>
+        <li>Tente usar palavras-chave relacionadas ao tema.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+
+    const API_KEY = "AIzaSyDEbBioExNkKb6_bd6yfdY_CSHnweUNj48";
+
+    const generationConfig = {
+      temperature: 1,
+      topP: 0.95,
+      topK: 40,
+      maxOutputTokens: 8192,
+      responseMimeType: "text/plain",
+    };
+
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = await genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash",
+  systemInstruction: "você é um guia para um Campus IFPR Assis Chateaubriand, você vai guiar as pessoas para as areas determinadas.\n\n\n\nServiços que a biblioteca tem a oferecer.\n\nAcesso Wireless\nDisponibilizar acesso à Internet sem fio nas bibliotecas.\nEmpréstimo Domiciliar \nOfertar empréstimo domiciliar e reserva de recursos informacionais.\nEmpréstimo entre Bibliotecas (EEB)\nOfertar empréstimo de livros de outras bibliotecas do IFPR via solicitação web.\nCapacitação\nOferecer programas de capacitação as(os) usuárias(os) para localização e uso de recursos informacionais no âmbito da Biblioteca, assim como treinamento à comunidade acadêmica em base de dados eletrônicas e online e a normalização de trabalhos acadêmicos.\nNada Consta\nEmissão de Certidão Negativa de Débitos online e com validação digital.\nLevantamento Bibliográfico\nAuxiliar a(o) usuária(o) na identificação e coleta das publicações, fisicas ou digitais, sobre determinado assunto ou autor em bases de dados e outras fontes de informação.\nIncetivo a Leitura\nDisponibilizar ações e projetos para fomentar a leitura e a formação de novas(os) leitoras e leitores.\nPara a Comunidade Externa\nVisitas Orientadas\nAs equipes das bibliotecas do IFPR estão prontas para recepcionar e apresentar a biblioteca, mediante agendamento.\nReservas de armarios\nfornece chaves para armarios, para guardar materiais academicos, prazo limite 1 dia\n\nOrigem\tDuvidas\tDestino\tHorarios de funcionamento\tMovimentação para chegar ao destino\nportaria\tDiploma\tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nportaria\tinscrição do passe estudantil\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nportaria\treunião com pais\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nportaria\tbolsas/passe estudantil\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nportaria\tmatriculas \tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nportaria\tpalestras/reunião\tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nportaria\tCursos disponiveis\tSecretaria\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, ela vai se encontrar na sua frente\nPortaria\tHorario de Professor\tSepae\t9:00 até as 17:00\tAlternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\nPortaria\tTroca de curso / cordenadores de curso\tCordenação de Curso\t9:00 até as 17:00\tSiga em frente, entre dentro do predio, suba as escadas até o segundo andar, vire a direita, siga em frente, primeira porta ao lado das janelas\nPortaria\tPalestras/reunião\tAuditorio \tapenas em dias de eventos ou palestras\tSiga em frente, entre dentro do predio, suba as escadas até o segundo andar, vire a direita, siga em frente, primeira porta a esquerda.\n\nLocalização exatas dos lugares caso alguem pergunte:\n\nBiblioteca:  Siga em frente, entre dentro do predio, vire a esquerda primeira porta dupla.\n\nSepae: Alternativa 1: Siga em frente, entre dentro do predio, vire a direita, no final do corredor vire a direita novamente, ultima porta a sua esquerda. Alternativa 2: Vire a esquerda seguindo a cobertura vire a esquerda ao lado da escada primeira porta a sua direita.\n\nSecretaria: Siga em frente, entre dentro do predio, ela vai se encontrar na sua frente\n\n\n",
+
+     });
+    var history = [
+      {
+        role: "user",
+        parts: [
+          { text: "Você é um guia\n" },
+        ],
+      },
+      
+    ];
+
+    document.querySelector("#enviar").addEventListener("click", () => sendMessage());
+    document.querySelector("#user-input").addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
+    async function sendMessage() {
+      const userInput = document.getElementById('user-input').value.trim();
+
+      if (userInput === "") return;
+
+      appendMessage('user', userInput);
+      appendTypingIndicator();
+
+
+      document.getElementById('user-input').value = '';
+
+
+
+      try {
+        const chatSession = model.startChat({
+          generationConfig,
+          history
+        });
+        const result = await chatSession.sendMessage(userInput);
+        // const result = await model.generateContent(userInput);//
+        const response = await result.response.text();
+        removeTypingIndicator();
+        appendMessage('bot', response);
+      } catch (error) {
+        removeTypingIndicator();
+        appendMessage('bot', 'Desculpe, houve um erro ao processar sua mensagem.');
+      }
+    }
+
+    function appendMessage(type, text) {
+      const messageContainer = document.createElement('div');
+      messageContainer.classList.add('message');
+      const isUser = type === 'user';
+      const messageClass = isUser ? 'user-message' : 'bot-message';
+      const imageSrc = isUser ? 'usuario.png' : 'logo.png';
+
+      messageContainer.classList.add(messageClass);
+      messageContainer.innerHTML = `
+        <img src="${imageSrc}" alt="Avatar" onerror="this.src='default-avatar.png';">
+        <div>${markdown.toHTML(text)}</div>
+      `;
+      document.getElementById('chat-container').appendChild(messageContainer);
+      document.getElementById('chat-container').scrollTop = document.getElementById('chat-container').scrollHeight;
+    }
+
+    function appendTypingIndicator() {
+      const typingIndicator = document.createElement('div');
+      typingIndicator.classList.add('typing-indicator');
+      typingIndicator.textContent = "Bot digitando";
+      document.getElementById('chat-container').appendChild(typingIndicator);
+    }
+
+    function removeTypingIndicator() {
+      const typingIndicator = document.querySelector('.typing-indicator');
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
+    }
+  </script>
+</body>
+
+</html>
